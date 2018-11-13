@@ -1,7 +1,5 @@
 package io.github.pleuvoir.sql.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 public class Column {
 
 	/** 列名 */

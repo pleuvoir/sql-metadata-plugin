@@ -4,6 +4,14 @@ Execute SQL to return result set metadata easily.
 ## Usage
 
 ```xml
+<dependency>
+	<groupId>io.github.pleuvoir</groupId>
+	<artifactId>sql-metadata-plugin</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+```xml
 <bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
 	<property name="dataSource" ref="dataSource"/>
 </bean>
