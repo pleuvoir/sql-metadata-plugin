@@ -3,13 +3,12 @@ package io.github.pleuvoir.sql;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.Assert;
 
-import io.github.pleuvoir.sql.core.convert.ConverterRoute;
-import io.github.pleuvoir.sql.core.convert.SimpleConverterRoute;
-import io.github.pleuvoir.sql.core.metadata.DefaultResultSetMetaDataService;
-import io.github.pleuvoir.sql.core.metadata.ResultSetMetaDataService;
-import io.github.pleuvoir.sql.excute.DBScriptRunner;
-import io.github.pleuvoir.sql.excute.DefaultDBScriptRunner;
+import io.github.pleuvoir.sql.script.DBScriptRunner;
+import io.github.pleuvoir.sql.script.DefaultDBScriptRunner;
+import io.github.pleuvoir.sql.support.metadata.DefaultResultSetMetaDataService;
+import io.github.pleuvoir.sql.support.metadata.ResultSetMetaDataService;
 
 public class MetaDataConfiguration {
 
@@ -21,14 +20,10 @@ public class MetaDataConfiguration {
 
 	@Bean(name = "resultSetMetaDataService")
 	public ResultSetMetaDataService resultSetMetaDataService() {
+		Assert.notNull(dataSource, "dataSource must be non-null.");
 		DefaultResultSetMetaDataService resultSetMetaDataService = new DefaultResultSetMetaDataService();
 		resultSetMetaDataService.setDataSource(this.dataSource);
 		return resultSetMetaDataService;
-	}
-
-	@Bean(name = "simpleConverterRoute")
-	public ConverterRoute converterRoute() {
-		return new SimpleConverterRoute();
 	}
 
 	@Bean(name = "defaultDBScriptRunner")

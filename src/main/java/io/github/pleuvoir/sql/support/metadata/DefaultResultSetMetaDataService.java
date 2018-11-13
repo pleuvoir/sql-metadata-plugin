@@ -1,4 +1,4 @@
-package io.github.pleuvoir.sql.core.metadata;
+package io.github.pleuvoir.sql.support.metadata;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
@@ -8,18 +8,15 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.util.Assert;
-
 import io.github.pleuvoir.sql.bean.ColumnExtend;
-import io.github.pleuvoir.sql.core.convert.ConverterService;
+import io.github.pleuvoir.sql.support.convert.TypeHandler;
 
 public class DefaultResultSetMetaDataService implements ResultSetMetaDataService {
 
 	private DataSource dataSource;
 
 	@Override
-	public List<ColumnExtend> query(String sql, ConverterService convertTypeService) throws SQLException {
-		Assert.notNull(dataSource, "必须设置 dataSource");
+	public List<ColumnExtend> query(String sql, TypeHandler convertTypeService) throws SQLException {
 		PreparedStatement ps = dataSource.getConnection().prepareStatement(sql);
 		ResultSetMetaData metaData = ps.getMetaData();
 		int columnCount = metaData.getColumnCount();

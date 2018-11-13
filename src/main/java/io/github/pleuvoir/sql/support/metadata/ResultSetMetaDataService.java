@@ -1,4 +1,4 @@
-package io.github.pleuvoir.sql.core.metadata;
+package io.github.pleuvoir.sql.support.metadata;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import io.github.pleuvoir.sql.bean.ColumnExtend;
-import io.github.pleuvoir.sql.core.convert.ConverterService;
+import io.github.pleuvoir.sql.support.convert.TypeHandler;
 
 public interface ResultSetMetaDataService {
 
-	List<ColumnExtend> query(String sql, ConverterService convertTypeService) throws SQLException;
+	List<ColumnExtend> query(String sql, TypeHandler convertTypeService) throws SQLException;
 
 	void setDataSource(DataSource dataSource);
 

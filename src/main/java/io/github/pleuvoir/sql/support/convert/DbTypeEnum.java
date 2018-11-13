@@ -1,4 +1,4 @@
-package io.github.pleuvoir.sql.core.convert;
+package io.github.pleuvoir.sql.support.convert;
 
 public enum DbTypeEnum {
 
