@@ -17,9 +17,6 @@ private DBScriptRunner dBScriptRunner;
 public void contextTest() {
 	MetaData metaData = dBScriptRunner.excute("select * from pub_param", DbTypeEnum.ORACLE);
 	System.out.println(metaData.toJSON());
-	// you can realize your typeHandlerFactory to support more database type.
-	dBScriptRunner.setTypeHandlerFactory(new MyTypeHandlerFactory());
-	dBScriptRunner.excute("select * from pub_param", "org.h2.Driver");
 }
 ```
 
