@@ -16,7 +16,7 @@ public class DefaultResultSetMetaDataService implements ResultSetMetaDataService
 	private DataSource dataSource;
 
 	@Override
-	public List<ColumnExtend> query(String sql, TypeHandler convertTypeService) throws SQLException {
+	public List<ColumnExtend> query(String sql, TypeHandler typeHandler) throws SQLException {
 		PreparedStatement ps = dataSource.getConnection().prepareStatement(sql);
 		ResultSetMetaData metaData = ps.getMetaData();
 		int columnCount = metaData.getColumnCount();
@@ -30,7 +30,7 @@ public class DefaultResultSetMetaDataService implements ResultSetMetaDataService
 			columnExtend.setPrecision(metaData.getPrecision(i));
 			columnExtend.setScale(metaData.getPrecision(i));
 			columnExtend.setColumnDisplaySize(metaData.getColumnDisplaySize(i));
-			columnExtend.setConvertedType(convertTypeService.convert(metaData.getColumnTypeName(i))); // 转换后的类型
+			columnExtend.setConvertedType(typeHandler.convert(metaData.getColumnTypeName(i))); // 转换后的类型
 			columnExtend.setField(toCamelCase(metaData.getColumnName(i))); // 字段名
 			ColumnExtendList.add(columnExtend);
 		}

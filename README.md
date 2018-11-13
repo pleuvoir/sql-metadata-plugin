@@ -1,7 +1,17 @@
+
 # sql-metadata-plugin
+
 Execute SQL to return result set metadata easily.
 
+[![HitCount](http://hits.dwyl.io/pleuvoir/sql-metadata-plugin.svg)](http://hits.dwyl.io/pleuvoir/sql-metadata-plugin) 
+[![GitHub issues](https://img.shields.io/github/issues/pleuvoir/sql-metadata-plugin.svg)](https://github.com/pleuvoir/sql-metadata-plugin/issues)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license)](https://github.com/pleuvoir/sql-metadata-plugin/blob/master/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.pleuvoir/sql-metadata-plugin.svg?label=maven%20central)](https://oss.sonatype.org/#nexus-search;quick~sql-metadata-plugin)
+[![Download](https://img.shields.io/badge/downloads-master-green.svg)](https://codeload.github.com/pleuvoir/sql-metadata-plugin/zip/master)
+
 ## Usage
+
+### import dependency
 
 ```xml
 <dependency>
@@ -11,11 +21,15 @@ Execute SQL to return result set metadata easily.
 </dependency>
 ```
 
+### register in spring container
+
 ```xml
 <bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
 	<property name="dataSource" ref="dataSource"/>
 </bean>
 ```
+
+### junit test
 
 ```java
 @Autowired
@@ -28,7 +42,7 @@ public void contextTest() {
 }
 ```
 
-you can realize your typeHandlerFactory to support more database type. look like this:
+you can realize your TypeHandlerFactory to support more database type. look like this:
 
 ```java
 dBScriptRunner.setTypeHandlerFactory(new MyTypeHandlerFactory());

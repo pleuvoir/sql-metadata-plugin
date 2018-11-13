@@ -10,7 +10,7 @@ import io.github.pleuvoir.sql.support.convert.TypeHandler;
 
 public interface ResultSetMetaDataService {
 
-	List<ColumnExtend> query(String sql, TypeHandler convertTypeService) throws SQLException;
+	List<ColumnExtend> query(String sql, TypeHandler typeHandler) throws SQLException;
 
 	void setDataSource(DataSource dataSource);
 
