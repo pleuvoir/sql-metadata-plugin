@@ -1,5 +1,6 @@
 package io.github.pleuvoir.sql.support.metadata;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -17,7 +18,8 @@ public class DefaultResultSetMetaDataService implements ResultSetMetaDataService
 
 	@Override
 	public List<ColumnExtend> query(String sql, TypeHandler typeHandler) throws SQLException {
-		PreparedStatement ps = dataSource.getConnection().prepareStatement(sql);
+		Connection connection = dataSource.getConnection();
+		PreparedStatement ps = connection.prepareStatement(sql);
 		ResultSetMetaData metaData = ps.getMetaData();
 		int columnCount = metaData.getColumnCount();
 		List<ColumnExtend> ColumnExtendList = new LinkedList<ColumnExtend>();
@@ -34,6 +36,7 @@ public class DefaultResultSetMetaDataService implements ResultSetMetaDataService
 			columnExtend.setField(toCamelCase(metaData.getColumnName(i))); // 字段名
 			ColumnExtendList.add(columnExtend);
 		}
+		connection.close();
 		return ColumnExtendList;
 	}
 
