@@ -11,6 +11,9 @@ public class MetaData {
 	private List<ColumnExtend> columnExtendList;
 
 	public DataModel asDataModel() {
-		return new DataModel(this);
+		DataModel dataModel = new DataModel();
+		dataModel.addData("metaData", this);
+		return dataModel;
 	}
+
 }
