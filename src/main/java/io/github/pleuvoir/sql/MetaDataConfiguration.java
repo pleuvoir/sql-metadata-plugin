@@ -5,9 +5,10 @@ import java.io.IOException;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import io.github.pleuvoir.sql.kit.ApplicationContextUtil;
 import io.github.pleuvoir.sql.kit.TemplateFactory;
@@ -32,11 +33,14 @@ public class MetaDataConfiguration {
 		return resultSetMetaDataService;
 	}
 
+	@Lazy
 	@Bean
 	public TemplateFactory templateFactory() throws IOException {
+		Assert.notNull(ftlLocation, "ftlLocation must be non-null.");
 		TemplateFactory templateFactory = new TemplateFactory();
-		templateFactory
-				.setLocation(new ClassPathResource(StringUtils.hasText(this.ftlLocation) ? this.ftlLocation : "ftl"));
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		Resource resource = resolver.getResource(ftlLocation);
+		templateFactory.setLocation(resource);
 		return templateFactory;
 	}
 
