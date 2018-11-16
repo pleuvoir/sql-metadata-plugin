@@ -1,4 +1,4 @@
-package io.github.pleuvoir.sql.kit;
+package io.github.pleuvoir.sql.tookit;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

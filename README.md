@@ -1,7 +1,7 @@
 
 # sql-metadata-plugin
 
-Execute SQL to return result set metadata easily.
+Execute SQL to return result-set metadata easily. It also provide template engine support for code-generator.
 
 [![HitCount](http://hits.dwyl.io/pleuvoir/sql-metadata-plugin.svg)](http://hits.dwyl.io/pleuvoir/sql-metadata-plugin) 
 [![GitHub issues](https://img.shields.io/github/issues/pleuvoir/sql-metadata-plugin.svg)](https://github.com/pleuvoir/sql-metadata-plugin/issues)
@@ -11,34 +11,54 @@ Execute SQL to return result set metadata easily.
 
 ## Usage
 
-### import dependency
+### Import dependency
 
 ```xml
 <dependency>
 	<groupId>io.github.pleuvoir</groupId>
 	<artifactId>sql-metadata-plugin</artifactId>
-	<version>1.0.0</version>
+	<version>${latest.version}</version>
 </dependency>
 ```
 
-### register in spring container
+### Register in spring container
 
 ```xml
 <bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
-	<property name="dataSource" ref="dataSource"/>
+	<!-- <property name="dataSource" ref="dataSource" /> -->  <!-- if you have dataSource already in spring, you can reference directly -->
+	<property name="dataSourceConfig" ref="dataSourceConfig" /> <!-- if you use dataSourceConfig, Be careful of database driver -->
+	<property name="ftlLocation" value="classpath:ftl" />
+</bean>
+
+<bean id="dataSourceConfig" class="io.github.pleuvoir.sql.bean.DataSourceConfig">
+	<property name="driverClass" value="..." />
+	<property name="url" value="..." />
+	<property name="username" value="..." />
+	<property name="password" value="..." />
 </bean>
 ```
 
-### junit test
+### Junit test
 
 ```java
 @Autowired
 private DBScriptRunner dBScriptRunner;
 
 @Test
-public void contextTest() {
+public void contextTest() throws FileNotFoundException, IOException, TemplateException {
+
+	// 1. get metaData
 	MetaData metaData = dBScriptRunner.excute("select * from pub_param", DbTypeEnum.ORACLE);
-	System.out.println(metaData.toJSON());
+
+	String entityName = "pubParamPO";
+	
+	// 2. convert to dataModel
+	DataModel dataModel = metaData.asDataModel().addData("entityName", entityName);
+
+	System.out.println(dataModel.toJSON());
+	
+	// 3. write file ..
+	dataModel.write("po.ftl", "D:\\" + entityName + ".java");
 }
 ```
 
@@ -53,3 +73,6 @@ dBScriptRunner.excute("select * from pub_param", "org.h2.Driver");
 
 now we only support `ORACLE` and `MYSQL`. All supported database type can be found in class `DbTypeEnum`.
 
+## LICENSE
+
+The sql-metadata-plugin is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).

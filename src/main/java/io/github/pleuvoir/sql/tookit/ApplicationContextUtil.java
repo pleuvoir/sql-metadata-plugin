@@ -1,4 +1,4 @@
-package io.github.pleuvoir.sql.kit;
+package io.github.pleuvoir.sql.tookit;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
