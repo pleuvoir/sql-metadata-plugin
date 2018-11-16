@@ -11,7 +11,7 @@ Execute SQL to return result-set metadata easily. It also provide template engin
 
 ## Usage
 
-### Import dependency
+### import dependency
 
 ```xml
 <dependency>
@@ -21,12 +21,14 @@ Execute SQL to return result-set metadata easily. It also provide template engin
 </dependency>
 ```
 
-### Register in spring container
+### register in spring container
 
 ```xml
 <bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
-	<!-- <property name="dataSource" ref="dataSource" /> -->  <!-- if you have dataSource already in spring, you can reference directly -->
-	<property name="dataSourceConfig" ref="dataSourceConfig" /> <!-- if you use dataSourceConfig, Be careful of database driver -->
+ 	<!-- if you have dataSource already in spring, you can reference directly -->
+	<!-- <property name="dataSource" ref="dataSource" /> --> 
+	<!-- if you use dataSourceConfig, Be careful of database driver -->
+	<property name="dataSourceConfig" ref="dataSourceConfig" /> 
 	<property name="ftlLocation" value="classpath:ftl" />
 </bean>
 
@@ -38,7 +40,7 @@ Execute SQL to return result-set metadata easily. It also provide template engin
 </bean>
 ```
 
-### Junit test
+### junit test
 
 ```java
 @Autowired
@@ -69,10 +71,10 @@ dBScriptRunner.setTypeHandlerFactory(new MyTypeHandlerFactory());
 dBScriptRunner.excute("select * from pub_param", "org.h2.Driver");
 ```
 
-## Support
+## support
 
 now we only support `ORACLE` and `MYSQL`. All supported database type can be found in class `DbTypeEnum`.
 
 ## LICENSE
 
-The sql-metadata-plugin is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
+[Apache License](LICENSE)
