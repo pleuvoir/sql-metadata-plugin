@@ -12,18 +12,20 @@
 	<properties>
 		<jdk.version>1.8</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<fastjson.version>1.2.31</fastjson.version>
 		<spring.version>5.0.6.RELEASE</spring.version>
+		<plugin.base.version>1.0.0</plugin.base.version>
 		<freemarker.version>2.3.23</freemarker.version>
-		<commons-io.version>2.6</commons-io.version>
-		<lombok.version>1.16.22</lombok.version>
 		<druid.version>1.1.10</druid.version>
 		<junit.version>4.12</junit.version>
-		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>io.github.pleuvoir</groupId>
+				<artifactId>plugin-base</artifactId>
+				<version>${plugin.base.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
@@ -35,34 +37,18 @@
 				<version>${druid.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${commons-io.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>io.github.pleuvoir</groupId>
+			<artifactId>plugin-base</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -72,26 +58,9 @@
 			<artifactId>druid</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<!-- Logger -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 		<!-- Test -->
 		<dependency>
