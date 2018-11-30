@@ -9,16 +9,19 @@
 
 
 	<bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
-		<!-- <property name="dataSource" ref="dataSource" /> -->
-		<property name="dataSourceConfig" ref="dataSourceConfig" /> <!-- if you use dataSourceConfig, Be careful of database driver -->
 		<property name="ftlLocation" value="classpath:ftl" />
-	</bean>
 
-	<bean id="dataSourceConfig" class="io.github.pleuvoir.sql.bean.DataSourceConfig">
-		<property name="driverClass" value="oracle.jdbc.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@192.168.100.8:1521:cacplat" />
-		<property name="username" value="auction_test" />
-		<property name="password" value="auction_test" />
+		<!-- <property name="dataSource" ref="dataSource" /> -->
+
+		<!-- if you use dataSourceConfig, Be careful of database driver -->
+		<property name="dataSourceConfig">
+			<bean class="io.github.pleuvoir.sql.bean.DataSourceConfig">
+				<property name="driverClass" value="oracle.jdbc.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@192.168.100.8:1521:cacplat" />
+				<property name="username" value="auction_test" />
+				<property name="password" value="auction_test" />
+			</bean>
+		</property>
 	</bean>
 
 </beans>

@@ -4,12 +4,10 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.Assert;
 
@@ -36,14 +34,14 @@ public class MetaDataConfiguration {
 	private String ftlLocation;
 	
 	@Bean
-	public ResultSetMetaDataService resultSetMetaDataService(@Qualifier("dataSourceConfig") DataSourceConfig dataSourceConfig) throws ClassNotFoundException {
+	public ResultSetMetaDataService resultSetMetaDataService() throws ClassNotFoundException {
 		DataSource dataSource = this.dataSource;
 		if (dataSource == null) {
 			Assert.notNull(dataSourceConfig, "dataSourceConfig must be non-null.");
 			Assert.hasLength(dataSourceConfig.getDriverClass(), "dataSourceConfig driverClass must be non-null.");
-			Assert.notNull(dataSourceConfig.getUrl(), "dataSourceConfig url must be non-null.");
-			Assert.notNull(dataSourceConfig.getUsername(), "dataSourceConfig username must be non-null.");
-			Assert.notNull(dataSourceConfig.getPassword(), "dataSourceConfig password must be non-null.");
+			Assert.hasLength(dataSourceConfig.getUrl(), "dataSourceConfig url must be non-null.");
+			Assert.hasLength(dataSourceConfig.getUsername(), "dataSourceConfig username must be non-null.");
+			Assert.hasLength(dataSourceConfig.getPassword(), "dataSourceConfig password must be non-null.");
 			dataSource = buildDataSource(dataSourceConfig);
 		}
 		DefaultResultSetMetaDataService resultSetMetaDataService = new DefaultResultSetMetaDataService();
@@ -75,9 +73,7 @@ public class MetaDataConfiguration {
 	public TemplateFactory templateFactory() throws IOException {
 		Assert.notNull(ftlLocation, "ftlLocation must be non-null.");
 		TemplateFactory templateFactory = new TemplateFactory();
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		Resource resource = resolver.getResource(ftlLocation);
-		templateFactory.setLocation(resource);
+		templateFactory.setLocation( new PathMatchingResourcePatternResolver().getResource(ftlLocation));
 		return templateFactory;
 	}
 
