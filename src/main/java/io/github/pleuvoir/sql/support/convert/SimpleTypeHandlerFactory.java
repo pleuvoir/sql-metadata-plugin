@@ -5,7 +5,7 @@ public class SimpleTypeHandlerFactory implements TypeHandlerFactory {
 	@Override
 	public TypeHandler route(String driverClassName) {
 		switch (driverClassName) {
-		case "oracle.jdbc.driver.OracleDriver": {
+		case "oracle.jdbc.OracleDriver": {
 			return new TypeHandler() {
 
 				@Override

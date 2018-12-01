@@ -27,8 +27,6 @@ Execute SQL to return result-set metadata easily. It also provide template engin
 <bean class="io.github.pleuvoir.sql.MetaDataConfiguration">
 	<property name="ftlLocation" value="classpath:ftl" />
 
-	<!-- <property name="dataSource" ref="dataSource" /> -->
-
 	<!-- if you use dataSourceConfig, Be careful of database driver -->
 	<property name="dataSourceConfig">
 		<bean class="io.github.pleuvoir.sql.bean.DataSourceConfig">
@@ -51,7 +49,7 @@ private DBScriptRunner dBScriptRunner;
 public void contextTest() throws FileNotFoundException, IOException, TemplateException {
 
 	// 1. get metaData
-	MetaData metaData = dBScriptRunner.excute("select * from pub_param", DbTypeEnum.ORACLE);
+	MetaData metaData = dBScriptRunner.excute("select * from pub_param");
 
 	String entityName = "pubParamPO";
 	
@@ -71,10 +69,6 @@ you can realize your TypeHandlerFactory to support more database type. look like
 dBScriptRunner.setTypeHandlerFactory(new MyTypeHandlerFactory());
 dBScriptRunner.excute("select * from pub_param", "org.h2.Driver");
 ```
-
-## support
-
-now we only support `ORACLE` and `MYSQL`. All supported database type can be found in class `DbTypeEnum`.
 
 ## LICENSE
 

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import freemarker.template.TemplateException;
 import io.github.pleuvoir.sql.bean.MetaData;
 import io.github.pleuvoir.sql.script.DBScriptRunner;
-import io.github.pleuvoir.sql.support.convert.DbTypeEnum;
 import io.github.pleuvoir.sql.tookit.DataModel;
 
 public class DBScriptRunnerTest extends BaseTest {
@@ -21,7 +20,7 @@ public class DBScriptRunnerTest extends BaseTest {
 	public void contextTest() throws FileNotFoundException, IOException, TemplateException {
 
 		// 1. get metaData
-		MetaData metaData = dBScriptRunner.excute("select * from pub_param", DbTypeEnum.ORACLE);
+		MetaData metaData = dBScriptRunner.excute("select * from pub_param");
 
 		String entityName = "pubParamPO";
 		

@@ -8,6 +8,9 @@ import lombok.Data;
 @Data
 public class MetaData {
 
+	// 主键名，仅当查询单表时会返回
+	private String primaryKey;
+
 	private List<ColumnExtend> columnExtendList;
 
 	public DataModel asDataModel() {

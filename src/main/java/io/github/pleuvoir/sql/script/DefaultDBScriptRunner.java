@@ -1,18 +1,14 @@
 package io.github.pleuvoir.sql.script;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import io.github.pleuvoir.sql.bean.ColumnExtend;
 import io.github.pleuvoir.sql.bean.MetaData;
-import io.github.pleuvoir.sql.support.convert.DbTypeEnum;
 import io.github.pleuvoir.sql.support.convert.SimpleTypeHandlerFactory;
 import io.github.pleuvoir.sql.support.convert.TypeHandler;
 import io.github.pleuvoir.sql.support.convert.TypeHandlerFactory;
 import io.github.pleuvoir.sql.support.metadata.ResultSetMetaDataService;
+import io.github.pleuvoir.sql.tookit.DataSourceConfigHolder;
 
 public class DefaultDBScriptRunner implements DBScriptRunner {
 
@@ -22,24 +18,29 @@ public class DefaultDBScriptRunner implements DBScriptRunner {
 	private TypeHandlerFactory typeHandlerFactory;
 
 	@Override
-	public MetaData excute(String sql, DbTypeEnum dbTypeEnum) {
-		return excute(sql, dbTypeEnum.getDriverClassName());
+	public MetaData excute(String sql, String driverClassName) {
+		this.typeHandlerFactory = (this.typeHandlerFactory == null ? new SimpleTypeHandlerFactory() : this.typeHandlerFactory);
+		TypeHandler typeHandler = typeHandlerFactory.route(driverClassName);
+		Assert.notNull(typeHandler, "we can't find suitable typeHandler, please check driverClassName or typeHandlerFactory.");
+		return resultSetMetaDataService.query(sql, typeHandler);
+	}
+	
+	@Override
+	public MetaData excute(String sql) {
+		return excute(sql, DataSourceConfigHolder.get().getDriverClass());
 	}
 
 	@Override
-	public MetaData excute(String sql, String driverClassName) {
-		
+	public MetaData excuteSingleTableQuery(String tableName) {
+		return excuteSingleTableQuery(tableName, DataSourceConfigHolder.get().getDriverClass());
+	}
+
+	@Override
+	public MetaData excuteSingleTableQuery(String tableName, String driverClassName) {
 		this.typeHandlerFactory = (this.typeHandlerFactory == null ? new SimpleTypeHandlerFactory() : this.typeHandlerFactory);
-		MetaData metaData = new MetaData();
-		try {
-			TypeHandler typeHandler = typeHandlerFactory.route(driverClassName);
-			Assert.notNull(typeHandler, "we can't find suitable typeHandler, please check driverClassName or typeHandlerFactory.");
-			List<ColumnExtend> columnExtendList = resultSetMetaDataService.query(sql, typeHandler);
-			metaData.setColumnExtendList(columnExtendList);
-		} catch (SQLException e) {
-			e.printStackTrace(System.err);
-		}
-		return metaData;
+		TypeHandler typeHandler = typeHandlerFactory.route(driverClassName);
+		Assert.notNull(typeHandler, "we can't find suitable typeHandler, please check driverClassName or typeHandlerFactory.");
+		return resultSetMetaDataService.querySingleTable(tableName, typeHandler);
 	}
 	
 	@Override

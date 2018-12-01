@@ -4,7 +4,7 @@
 
 	<groupId>io.github.pleuvoir</groupId>
 	<artifactId>sql-metadata-plugin</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<name>sql-metadata-plugin</name>
 	<description>Execute SQL to return result set metadata easily.</description>
 	<url>https://github.com/pleuvoir/sql-metadata-plugin</url>

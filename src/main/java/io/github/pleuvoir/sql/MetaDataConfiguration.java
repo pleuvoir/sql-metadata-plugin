@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -19,15 +20,15 @@ import io.github.pleuvoir.sql.script.DefaultDBScriptRunner;
 import io.github.pleuvoir.sql.support.metadata.DefaultResultSetMetaDataService;
 import io.github.pleuvoir.sql.support.metadata.ResultSetMetaDataService;
 import io.github.pleuvoir.sql.tookit.ApplicationContextUtil;
+import io.github.pleuvoir.sql.tookit.DataSourceConfigHolder;
 import io.github.pleuvoir.sql.tookit.TemplateFactory;
 import lombok.Setter;
 
 @Import(ApplicationContextUtil.class)
-@Configuration
 public class MetaDataConfiguration {
 	
-	@Setter
-	private DataSource dataSource;
+	private static Logger logger = LoggerFactory.getLogger(MetaDataConfiguration.class);
+	
 	@Setter
 	private DataSourceConfig dataSourceConfig;
 	@Setter
@@ -35,17 +36,15 @@ public class MetaDataConfiguration {
 	
 	@Bean
 	public ResultSetMetaDataService resultSetMetaDataService() throws ClassNotFoundException {
-		DataSource dataSource = this.dataSource;
-		if (dataSource == null) {
-			Assert.notNull(dataSourceConfig, "dataSourceConfig must be non-null.");
-			Assert.hasLength(dataSourceConfig.getDriverClass(), "dataSourceConfig driverClass must be non-null.");
-			Assert.hasLength(dataSourceConfig.getUrl(), "dataSourceConfig url must be non-null.");
-			Assert.hasLength(dataSourceConfig.getUsername(), "dataSourceConfig username must be non-null.");
-			Assert.hasLength(dataSourceConfig.getPassword(), "dataSourceConfig password must be non-null.");
-			dataSource = buildDataSource(dataSourceConfig);
-		}
+		logger.info("[*] MetaDataConfiguration resultSetMetaDataService start setup ... v1.0.2");
+		Assert.notNull(dataSourceConfig, "dataSourceConfig must be non-null.");
+		DataSourceConfigHolder.set(dataSourceConfig);
+		Assert.hasLength(dataSourceConfig.getDriverClass(), "dataSourceConfig driverClass must be non-null.");
+		Assert.hasLength(dataSourceConfig.getUrl(), "dataSourceConfig url must be non-null.");
+		Assert.hasLength(dataSourceConfig.getUsername(), "dataSourceConfig username must be non-null.");
+		Assert.hasLength(dataSourceConfig.getPassword(), "dataSourceConfig password must be non-null.");
 		DefaultResultSetMetaDataService resultSetMetaDataService = new DefaultResultSetMetaDataService();
-		resultSetMetaDataService.setDataSource(dataSource);
+		resultSetMetaDataService.setDataSource(buildDataSource(dataSourceConfig));
 		return resultSetMetaDataService;
 	}
 
@@ -71,9 +70,9 @@ public class MetaDataConfiguration {
 	@Lazy
 	@Bean
 	public TemplateFactory templateFactory() throws IOException {
-		Assert.notNull(ftlLocation, "ftlLocation must be non-null.");
+		Assert.hasLength(ftlLocation, "ftlLocation must be non-null.");
 		TemplateFactory templateFactory = new TemplateFactory();
-		templateFactory.setLocation( new PathMatchingResourcePatternResolver().getResource(ftlLocation));
+		templateFactory.setLocation(new PathMatchingResourcePatternResolver().getResource(ftlLocation));
 		return templateFactory;
 	}
 
