@@ -1,5 +1,7 @@
 package io.github.pleuvoir.sql.support.convert;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class SimpleTypeHandlerFactory implements TypeHandlerFactory {
 
 	@Override
@@ -42,33 +44,25 @@ public class SimpleTypeHandlerFactory implements TypeHandlerFactory {
 				@Override
 				public String convert(String columnTypeName) {
 					String type = "";
-					switch (columnTypeName) {
-					case "VARCHAR2":
+					if (StringUtils.contains(columnTypeName, "BIGINT")) {
+						type = "Long";
+					} else if (StringUtils.contains(columnTypeName, "INT")) {
+						type = "Integer";
+					} else if (StringUtils.contains(columnTypeName, "VARCHAR")) {
 						type = "String";
-						break;
-					case "TIMESTAMP":
-						type = "LocalDateTime";
-						break;
-					case "DATE":
-						type = "LocalDateTime";
-						break;
-					case "DECIMAL":
+					} else if (StringUtils.contains(columnTypeName, "DECIMAL")) {
 						type = "BigDecimal";
-						break;
-					case "BLOB":
-						type = "byte[]";
-						break;
-					default:
+					} else if (StringUtils.contains(columnTypeName, "DATETIME")) {
+						type = "Date";
+					} else {
 						type = "String";
-						assert false;
 					}
 					return type;
 				}
 			};
 		}
-			default:
-				throw new IllegalArgumentException(
-						"unsupported database type, driverClassName[" + driverClassName + "]");
+		default:
+			throw new IllegalArgumentException("unsupported database type, driverClassName[" + driverClassName + "]");
 		}
 	}
 
